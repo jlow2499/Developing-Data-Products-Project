@@ -2,7 +2,8 @@ library(shiny)
 library(shinydashboard)
 library(DT)
 library(dplyr)
-library(ggvis)
+library(xts)
+library(dygraphs)
 
 setwd("C:/Users/193344/Desktop/DataProductsClass")
 
@@ -34,8 +35,9 @@ rm(complaints)
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("State Data Table", tabName = "state", icon = icon("dashboard")),
+    menuItem("State Complaint Map",tabName = "MAP",icon = icon("bar-chart-o")),
     menuItem("Daily Data Table",tabName = "Day", icon = icon("dashboard")),
-    menuItem("State Plot",tabName = "MAP",icon = icon("bar-chart-o")),
+    menuItem("Daily Time Series Plot",tabName = "TZ",icon = icon("bar-chart-o")),
     selectInput("product",
                 "Select Product for State Map",
                 choices=levels(cfpb.st$Product),
@@ -54,7 +56,20 @@ body <- dashboardBody(
             DT::dataTableOutput("day")),
     tabItem(tabName="MAP",
             h2("State Map"),
-            htmlOutput("StatePlot"))
+            htmlOutput("StatePlot")),
+    tabItem(tabName="TZ",
+            h2("Time Series Plot"),
+            
+            fluidRow(
+              column(width=4),
+              column(width=4,
+                     box(width=NULL,
+                         selectInput("product2",
+                                     "Select Product",
+                                     choices=levels(cfpb.ts$Product),
+                                     multiple=FALSE)))),
+            box(width=12,
+                dygraphOutput("DYEGRAPH1")))
     )
   )
 
@@ -101,7 +116,14 @@ server <- function(input, output) {
                     list("sExtends" = "collection",
                          "sButtonText" = "Save",
                          "aButtons" = c("csv","xls"))))))
-  })  
+  })
+  
+  dygraph1 <- reactive({
+    t <- cfpb.ts[cfpb.ts$Product == input$product2,]
+    t <- t[,-2]
+    t <- as.xts(t,order.by=t$Date.received)
+    t
+  })
   
   plot1 <- reactive({
     state <- subset(cfpb.st,Product == input$product)
@@ -113,6 +135,12 @@ server <- function(input, output) {
                                                            displayMode="regions", 
                                                            resolution="provinces",
                                                            width=1200, height=800))
+  })
+  
+  output$DYEGRAPH1 <- renderDygraph({
+    dygraph(dygraph1(),main="Complaints since 2012") %>%
+      dyAxis("y",label = "Number of Complaints") %>%
+      dyRangeSelector()
   })
   
 }
