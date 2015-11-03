@@ -72,7 +72,6 @@ body <- dashboardBody(
     )
   )
 
-
 ui <- dashboardPage(
   dashboardHeader(title = "CFPB Complaints"),
   sidebar,
@@ -80,7 +79,6 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output) {
-  
    
   output$day <- DT::renderDataTable({
     datatable(cfpb.ts,extensions = 'TableTools', rownames=FALSE,class = 'cell-border stripe',filter="top",
@@ -88,7 +86,6 @@ server <- function(input, output) {
                 searching=TRUE,
                 autoWidth=TRUE,
                 paging=TRUE,
-                
                 "sDom" = 'T<"clear">lfrtip',
                 "oTableTools" = list(
                   "sSwfPath" = "//cdnjs.cloudflare.com/ajax/libs/datatables-tabletools/2.1.5/swf/copy_csv_xls.swf",
