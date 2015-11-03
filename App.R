@@ -1,15 +1,14 @@
-library(shiny)
-library(shinydashboard)
-library(DT)
-library(dplyr)
-library(xts)
-library(dygraphs)
+require(shiny)
+require(shinydashboard)
+require(googleVis)
+require(DT)
+require(dplyr)
+require(xts)
+require(dygraphs)
 
-setwd("C:/Users/193344/Desktop/DataProductsClass")
+setwd("~/")
 
 complaints <- read.csv("~/complaints.csv")
-
-library(dplyr)
 
 complaints$Date.received <- as.Date(complaints$Date.received,"%m/%d/%Y")
 
