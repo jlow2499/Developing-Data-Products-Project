@@ -9,7 +9,7 @@ require(dygraphs)
 setwd("~/")
 
 complaints <- read.csv("~/complaints.csv",stringsAsFactors=FALSE)
-POP <- read.csv("C:/Users/193344/Desktop/State Charts/POP.csv",stringsAsFactors=FALSE)
+POP <- read.csv("~/POP.csv",stringsAsFactors=FALSE)
 
 complaints$Date.received <- as.Date(complaints$Date.received,"%m/%d/%Y")
 
