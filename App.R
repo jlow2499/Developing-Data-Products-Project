@@ -204,7 +204,7 @@ server <- function(input, output) {
  
   
   output$StatePlot <- renderGvis({
-   gvisGeoChart(plot1(),"State","Complaints To Population * 10000",options=list(region="US", 
+   gvisGeoChart(plot1(),"State","Complaints To Population",options=list(region="US", 
                                                                                  displayMode="regions", 
                                                                                  resolution="provinces",
                                                                                 height=650,width=1100))
