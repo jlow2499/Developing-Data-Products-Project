@@ -45,13 +45,13 @@ cfpb.st.sp <- cfpb.st.sp[!cfpb.st.sp$State %in% bad,]
 rm(complaints)
 
 cfpb.st <- left_join(cfpb.st,POP,by="State") %>%
-  mutate(ComplaintsToPopulation=round(Complaints/Population,7)*10000)
+  mutate(ComplaintsToPopulation=(Complaints/Population))
 
 cfpb.st.sp <- left_join(cfpb.st.sp,POP,by="State") %>%
-  mutate(ComplaintsToPopulation=round(Complaints/Population,7)*10000)
+  mutate(ComplaintsToPopulation=(Complaints/Population))
 
-cfpb.st <-  plyr::rename(cfpb.st,c("ComplaintsToPopulation"="Complaints To Population * 10000"))
-cfpb.st.sp <-  plyr::rename(cfpb.st.sp,c("ComplaintsToPopulation"="Complaints To Population * 10000"))
+cfpb.st <-  plyr::rename(cfpb.st,c("ComplaintsToPopulation"="Complaints To Population"))
+cfpb.st.sp <-  plyr::rename(cfpb.st.sp,c("ComplaintsToPopulation"="Complaints To Population"))
 
 cfpb.st.sp <- rename(cfpb.st.sp,Product=Sub.product)
 cfpb.ts.sp <- rename(cfpb.ts.sp,Product=Sub.product)
@@ -70,16 +70,25 @@ cfpb.ts.sp$Product <- factor(cfpb.ts.sp$Product)
 
 sidebar <- dashboardSidebar(
   sidebarMenu(
-    menuItem("State Data Table", tabName = "state", icon = icon("dashboard")),
-    menuItem("State Complaint Map",tabName = "MAP",icon = icon("bar-chart-o")),
-    menuItem("Daily Data Table",tabName = "Day", icon = icon("dashboard")),
-    menuItem("Daily Time Series Plot",tabName = "TZ",icon = icon("bar-chart-o")),
+    menuItem("State Data Table", 
+             tabName = "state", 
+             icon = icon("dashboard")),
+    menuItem("State Complaint Map",
+             tabName = "MAP",
+             icon = icon("bar-chart-o")),
+    menuItem("Daily Data Table",
+             tabName = "Day", 
+             icon = icon("dashboard")),
+    menuItem("Daily Time Series Plot",
+             tabName = "TZ",
+             icon = icon("bar-chart-o")),
     selectInput("data",
                 "Data View",
                 choices=c("Product","Sub Product"),
                 multiple=FALSE),
     uiOutput("input1"),
-    fluidRow(column(width=1),actionButton("generate","Generate State Plot"))
+    fluidRow(column(width=1),
+             actionButton("generate","Generate State Plot"))
   )
 )
 
