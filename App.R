@@ -45,13 +45,13 @@ cfpb.st.sp <- cfpb.st.sp[!cfpb.st.sp$State %in% bad,]
 rm(complaints)
 
 cfpb.st <- left_join(cfpb.st,POP,by="State") %>%
-  mutate(ComplaintsToPopulation=(Complaints/Population))
+  mutate(ComplaintsToPopulation=(Complaints/Population)*10000)
 
 cfpb.st.sp <- left_join(cfpb.st.sp,POP,by="State") %>%
-  mutate(ComplaintsToPopulation=(Complaints/Population))
+  mutate(ComplaintsToPopulation=(Complaints/Population)*10000)
 
-cfpb.st <-  plyr::rename(cfpb.st,c("ComplaintsToPopulation"="Complaints To Population"))
-cfpb.st.sp <-  plyr::rename(cfpb.st.sp,c("ComplaintsToPopulation"="Complaints To Population"))
+cfpb.st <-  plyr::rename(cfpb.st,c("ComplaintsToPopulation"="Complaints To Population Times 10000"))
+cfpb.st.sp <-  plyr::rename(cfpb.st.sp,c("ComplaintsToPopulation"="Complaints To Population Times 10000"))
 
 cfpb.st.sp <- rename(cfpb.st.sp,Product=Sub.product)
 cfpb.ts.sp <- rename(cfpb.ts.sp,Product=Sub.product)
@@ -204,7 +204,7 @@ server <- function(input, output) {
  
   
   output$StatePlot <- renderGvis({
-   gvisGeoChart(plot1(),"State","Complaints To Population",options=list(region="US", 
+   gvisGeoChart(plot1(),"State","Complaints To Population Times 10000",options=list(region="US", 
                                                                                  displayMode="regions", 
                                                                                  resolution="provinces",
                                                                                 height=650,width=1100))
@@ -232,3 +232,5 @@ server <- function(input, output) {
   
 }
 shinyApp(ui, server)
+
+
