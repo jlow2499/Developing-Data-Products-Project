@@ -104,8 +104,9 @@ body <- dashboardBody(
             DT::dataTableOutput("day")),
     
     tabItem(tabName="MAP",
-            h2("State Map"),   
-            uiOutput("input1"),
+            h2("State Map"), 
+            fluidRow(column(width=4),
+            column(width=4,uiOutput("input1"))),
             htmlOutput("StatePlot")),
 
     tabItem(tabName="TZ",
@@ -215,7 +216,7 @@ server <- function(input, output) {
    gvisGeoChart(plot1(),"State","Complaints To Population Times 10000",options=list(region="US", 
                                                                                  displayMode="regions", 
                                                                                  resolution="provinces",
-                                                                                height=650,width=1100))
+                                                                                height=550,width=1000))
 
   })
   
