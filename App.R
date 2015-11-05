@@ -85,10 +85,10 @@ sidebar <- dashboardSidebar(
     selectInput("data",
                 "Data View",
                 choices=c("Product","Sub Product"),
-                multiple=FALSE),
-    uiOutput("input1"),
-    fluidRow(column(width=1),
-             actionButton("generate","Generate State Plot"))
+                multiple=FALSE)
+ #   uiOutput("input1")
+#    fluidRow(column(width=1),
+ #            actionButton("generate","Generate State Plot"))
   )
 )
 
@@ -105,6 +105,7 @@ body <- dashboardBody(
     
     tabItem(tabName="MAP",
             h2("State Map"),   
+            uiOutput("input1"),
             htmlOutput("StatePlot")),
 
     tabItem(tabName="TZ",
@@ -146,7 +147,7 @@ server <- function(input, output) {
       return(NULL)
     Var <- ProductView.st()
     selectInput("product",
-              "Select Product for State Map",
+              "Select Product",
               choices=levels(Var$Product),
               multiple=FALSE)
   })
@@ -195,7 +196,13 @@ server <- function(input, output) {
                          "aButtons" = c("csv","xls"))))))
   })
   
-  plot1 <- eventReactive(input$generate,{
+ # plot1 <- eventReactive(input$generate,{
+#    state <- ProductView.st()
+ #   state <- subset(state,Product == input$product)
+  #  state
+  #})
+  
+  plot1 <- reactive({
     state <- ProductView.st()
     state <- subset(state,Product == input$product)
     state
@@ -204,6 +211,7 @@ server <- function(input, output) {
  
   
   output$StatePlot <- renderGvis({
+    Sys.sleep(1)
    gvisGeoChart(plot1(),"State","Complaints To Population Times 10000",options=list(region="US", 
                                                                                  displayMode="regions", 
                                                                                  resolution="provinces",
