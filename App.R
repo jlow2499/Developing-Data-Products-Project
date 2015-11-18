@@ -1,3 +1,4 @@
+#load required packages
 require(shiny)
 require(shinydashboard)
 require(googleVis)
@@ -8,11 +9,14 @@ require(dygraphs)
 
 setwd("~/")
 
+#read in files
 complaints <- read.csv("~/complaints.csv",stringsAsFactors=FALSE)
 POP <- read.csv("~/POP.csv",stringsAsFactors=FALSE)
 
+#clean data
 complaints$Date.received <- as.Date(complaints$Date.received,"%m/%d/%Y")
 
+#create data tables using dplyr to group and summarize the variables of importance
 cfpb.ts <- complaints %>%
   group_by(Date.received,Product) %>%
   summarize(Complaints = n()) %>%
@@ -37,6 +41,7 @@ cfpb.st.sp <- complaints %>%
   ungroup() %>%
   arrange(desc(Complaints))
 
+#create a vector of states to remove from the data (for the state map)
 bad <- c("","AA","AE","DC","AP","AS","FM","GU","MH","MP","PR","PW","VI")
 
 cfpb.st <- cfpb.st[!cfpb.st$State %in% bad,]
@@ -44,12 +49,15 @@ cfpb.st.sp <- cfpb.st.sp[!cfpb.st.sp$State %in% bad,]
 
 rm(complaints)
 
+#join the created data frames to the state population data frame by State
 cfpb.st <- left_join(cfpb.st,POP,by="State") %>%
   mutate(ComplaintsToPopulation=(Complaints/Population)*10000)
 
 cfpb.st.sp <- left_join(cfpb.st.sp,POP,by="State") %>%
   mutate(ComplaintsToPopulation=(Complaints/Population)*10000)
 
+#use plyr's rename to clean up the variable names for presentation. 
+#Dplyr's rename will not allow the use of spaces and some characters.
 cfpb.st <-  plyr::rename(cfpb.st,c("ComplaintsToPopulation"="Complaints To Population Times 10000"))
 cfpb.st.sp <-  plyr::rename(cfpb.st.sp,c("ComplaintsToPopulation"="Complaints To Population Times 10000"))
 
@@ -59,6 +67,7 @@ cfpb.ts.sp <- rename(cfpb.ts.sp,Product=Sub.product)
 cfpb.st.sp <- cfpb.st.sp[cfpb.st.sp$Product != "",]
 cfpb.ts.sp <- cfpb.ts.sp[cfpb.ts.sp$Product != "",]
 
+#set variables to factors so they can be filtered properly in the datatables.
 cfpb.st$State <- factor(cfpb.st$State)
 cfpb.st$Product <- factor(cfpb.st$Product)
 cfpb.ts$Product <- factor(cfpb.ts$Product)
@@ -67,7 +76,7 @@ cfpb.st.sp$State <- factor(cfpb.st.sp$State)
 cfpb.st.sp$Product <- factor(cfpb.st.sp$Product)
 cfpb.ts.sp$Product <- factor(cfpb.ts.sp$Product)
 
-
+#create a sidebar object in the UI interface
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("State Data Table", 
@@ -91,7 +100,7 @@ sidebar <- dashboardSidebar(
  #            actionButton("generate","Generate State Plot"))
   )
 )
-
+#create the UI body
 body <- dashboardBody(
   tabItems(
     tabItem(tabName = "state",
@@ -122,15 +131,17 @@ body <- dashboardBody(
     )
   )
 
-
+#set the ui title and add the sidebar and body objects
 ui <- dashboardPage(
   dashboardHeader(title = "CFPB Complaints"),
   sidebar,
   body
 )
 
+#create the server side of the dashboard
 server <- function(input, output) {
   
+  #create a switch to chose between which product to view in the dashboard
   ProductView.st <- reactive({
     switch(input$data,
            "Product"=cfpb.st,
@@ -143,6 +154,7 @@ server <- function(input, output) {
            "Sub Product"=cfpb.ts.sp)
   })
   
+  #create dynamic select input buttons based upon the user's product selection.
   output$input1 <- renderUI({
     if(is.null(input$data))
       return(NULL)
@@ -163,6 +175,7 @@ server <- function(input, output) {
                 multiple=FALSE)
   })
    
+   #create data tables. Use extensions for copy, save, and print.
   output$day <- DT::renderDataTable({
     datatable(ProductView.ts(),extensions = 'TableTools', rownames=FALSE,class = 'cell-border stripe',filter="top",
               options = list(
@@ -196,21 +209,14 @@ server <- function(input, output) {
                          "sButtonText" = "Save",
                          "aButtons" = c("csv","xls"))))))
   })
-  
- # plot1 <- eventReactive(input$generate,{
-#    state <- ProductView.st()
- #   state <- subset(state,Product == input$product)
-  #  state
-  #})
-  
+  #create a reactive subset for the state plot
   plot1 <- reactive({
     state <- ProductView.st()
     state <- subset(state,Product == input$product)
     state
   })
   
- 
-  
+  #create the state plot and delay the rendering by 1 second in order for the switch to work. 
   output$StatePlot <- renderGvis({
     Sys.sleep(1)
    gvisGeoChart(plot1(),"State","Complaints To Population Times 10000",options=list(region="US", 
@@ -221,7 +227,7 @@ server <- function(input, output) {
   })
   
   
-  
+  #create a reactive subset for the dygraph
   dygraph1 <- reactive({
     if(is.null(input$data))
       return(NULL)
@@ -232,7 +238,7 @@ server <- function(input, output) {
     t <- as.xts(t,order.by=t$Date.received)
     t
   })
-  
+  #create the dyegraph
   output$DYEGRAPH1 <- renderDygraph({
    dygraph(dygraph1(),main="Complaints since 2012") %>%
       dyAxis("y",label = "Number of Complaints") %>%
