@@ -95,9 +95,6 @@ sidebar <- dashboardSidebar(
                 "Data View",
                 choices=c("Product","Sub Product"),
                 multiple=FALSE)
- #   uiOutput("input1")
-#    fluidRow(column(width=1),
- #            actionButton("generate","Generate State Plot"))
   )
 )
 #create the UI body
