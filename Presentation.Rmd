@@ -56,7 +56,7 @@ options(gvis.plot.tag="chart")
 ```
 
 
-```{r, tidy=FALSE}
+```{r, tidy=FALSE, results="asis",message=FALSE}
 op <- options(gvis.plot.tag='chart')
 cfpb <- read.csv("~/cfpb.csv")
 state <- subset(cfpb,Product == "Mortgage")
@@ -65,13 +65,6 @@ plot<-gvisGeoChart(data=state,"State","Complaints.To.Population.Times.10000",
                    displayMode="regions", 
                    resolution="provinces",
                    height=200,width=450))
-```
-
---- .class #id 
-
-## State Plot
-
-```{r results='asis', tidy=FALSE,message=FALSE,echo=FALSE}
 plot(plot)
 ```
 
@@ -82,7 +75,3 @@ plot(plot)
 > * This dashboard is designed for senior managers/executives within any financial service industry. 
 > * It should provide them with a basic synopsis of where and when complaints are happening without delving into too much analytic detail. 
 > * Further analysis on why should be requested by the end user.
- 
-
-
-
