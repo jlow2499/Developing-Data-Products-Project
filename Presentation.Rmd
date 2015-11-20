@@ -1,0 +1,64 @@
+---
+title       : CFPB Complaints
+subtitle    : A Dashboard for Time Series and Location of Complaints
+author      : Jeremiah Lowhorn
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Background/Motivation
+> * The purpose of this dashboard is to shed light on any possible trends in complaints with the Consumer Finanical Protection Bureau. 
+> * Currently there is no published analysis of CFPB complaints available to Department of Education contractors. 
+
+--- .class #id 
+
+## Where to get the data
+
+The Consumer Financial Protection Bureau dataset can be found at data.gov with the link below. The state poplulation data set was pulled from a data set used for analysis within GC Services. There is no NPPI 
+(Non-public Personal Information) within the data set. This can be pulled directly from my github account.
+The application itself is self contained, meaning the code to clean the data and run the app is located in one file called App.R. This eliminates the number of files required to construct the app from 3 to 1. 
+
+#### CFPB Data: 
+
+<http://catalog.data.gov/dataset/consumer-complaint-database/resource/2f297213-7198-4be1-af1e-2d2623e7f6e9>
+
+#### Link to Github:
+
+<https://github.com/jlow2499/Developing-Data-Products-Project>
+
+--- .class #id 
+
+## Dashboard Composition
+
+#### State Data Table
+This table is a summarized version of the original data set that is grouped by state and the financial product. It totals the complaints for each state and product and then compares those complaints to the state's population. 
+
+#### State Complaint Map
+Using the data from the State Data Table this shows an interactive map to allow the user to better visualize the data.
+
+#### Daily Data Table
+This table is a summarized version of the original data set that is grouped by date and the financial product. It totals the complaints for each day and product and then compares those complaints to the state's population.
+
+#### Daily Time Series Plot
+Using the data from the Daily Data Table this shows an interactive time series chart to allot the user to better visualize the data.
+
+--- .class #id 
+
+## End User
+
+> * This dashboard is designed for senior managers/executives within any financial service industry. 
+> * It should provide them with a basic synopsis of where and when complaints are happening without delving into too much analytic detail. 
+> * Further analysis on why should be requested by the end user.
+
+--- .class #id 
+
+## Instructions to Run Locally
+> * Save the data as complaints.csv in your parent working directory. ("~/") The app will also need to be in your parent directory for the file to work. 
+> * Once App.R and complaints.csv is in your parent directory you will need to make sure you install the following packages (otherwise the application may take awhile to load): shiny, shinydashboard, DT, dplyr, googleVis, xts, and dygraphs. 
+> * You can choose to either host the app on your local machine or simply source the code to view the app without allowing other users to access it through your IP and port. To allow other users to view the application use the command runApp(host="0.0.0.0",port=5050). 
+> * Other users will be able to view your app through your IP and port number. 
