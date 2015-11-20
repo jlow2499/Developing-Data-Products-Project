@@ -246,6 +246,5 @@ server <- function(input, output) {
   })
   
 }
+#create the Shiny app object
 shinyApp(ui, server)
-
-
