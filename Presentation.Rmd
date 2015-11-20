@@ -3,25 +3,34 @@ title       : CFPB Complaints
 subtitle    : A Dashboard for Time Series and Location of Complaints
 author      : Jeremiah Lowhorn
 job         : 
-framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+framework   : revealjs        
+revealjs: {theme: solarized,transition: cube}
 highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
 widgets     : []            # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
 ---
+  
+ 
+## CFPB Complaints
 
-## Background/Motivation
+ 
+#### A Dashboard for Time Series and Location of Complaints
+ 
+#### Jeremiah Lowhorn
+
+--- .class #id 
+
+### Background/Motivation
 > * The purpose of this dashboard is to shed light on any possible trends in complaints with the Consumer Finanical Protection Bureau. 
 > * Currently there is no published analysis of CFPB complaints available to Department of Education contractors. 
 
 --- .class #id 
 
-## Where to get the data
+### Where to get the data
 
-The Consumer Financial Protection Bureau dataset can be found at data.gov with the link below. The state poplulation data set was pulled from a data set used for analysis within GC Services. There is no NPPI 
-(Non-public Personal Information) within the data set. This can be pulled directly from my github account.
-The application itself is self contained, meaning the code to clean the data and run the app is located in one file called App.R. This eliminates the number of files required to construct the app from 3 to 1. 
+The Consumer Financial Protection Bureau dataset can be found at data.gov with the link below. The application itself is self contained, meaning the code to clean the data and run the app is located in one file called App.R. This eliminates the number of files required to construct the app from 3 to 1. 
 
 #### CFPB Data: 
 
@@ -33,7 +42,7 @@ The application itself is self contained, meaning the code to clean the data and
 
 --- .class #id 
 
-## Dashboard Composition
+### Dashboard Composition
 
 #### State Data Table
 This table is a summarized version of the original data set that is grouped by state and the financial product. It totals the complaints for each state and product and then compares those complaints to the state's population. 
@@ -41,15 +50,20 @@ This table is a summarized version of the original data set that is grouped by s
 #### State Complaint Map
 Using the data from the State Data Table this shows an interactive map to allow the user to better visualize the data.
 
+--- .class #id 
+
+### Dashboard Composition Continued
+
 #### Daily Data Table
 This table is a summarized version of the original data set that is grouped by date and the financial product. It totals the complaints for each day and product and then compares those complaints to the state's population.
 
-#### Daily Time Series Plot
+#### Daily Time Series P lot
 Using the data from the Daily Data Table this shows an interactive time series chart to allot the user to better visualize the data.
+
 
 --- .class #id 
 
-## Calculation of googleVis State Plot
+### Calculation of googleVis State Plot
 ```{r, setOptions, echo=FALSE}
 library(googleVis)
 options(gvis.plot.tag="chart")
@@ -70,8 +84,12 @@ plot(plot)
 
 --- .class #id 
 
-## End User
+### End User
 
 > * This dashboard is designed for senior managers/executives within any financial service industry. 
 > * It should provide them with a basic synopsis of where and when complaints are happening without delving into too much analytic detail. 
 > * Further analysis on why should be requested by the end user.
+ 
+
+
+
