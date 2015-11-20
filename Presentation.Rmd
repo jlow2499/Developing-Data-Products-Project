@@ -24,7 +24,7 @@ knit        : slidify::knit2slides
 
 ### Background/Motivation
 > * The purpose of this dashboard is to shed light on any possible trends in complaints with the Consumer Finanical Protection Bureau. 
-> * Currently there is no published analysis of CFPB complaints available to Department of Education contractors. 
+> * Currently, there is no published analysis of CFPB complaints available to Department of Education contractors. 
 
 --- .class #id 
 
@@ -45,7 +45,7 @@ The Consumer Financial Protection Bureau dataset can be found at data.gov with t
 ### Dashboard Composition
 
 #### State Data Table
-This table is a summarized version of the original data set that is grouped by state and the financial product. It totals the complaints for each state and product and then compares those complaints to the state's population. 
+This table is a summarized version of the original data set that is grouped by state and the financial product. It totals the complaints for each state and product then compares those complaints to the state's population. 
 
 #### State Complaint Map
 Using the data from the State Data Table this shows an interactive map to allow the user to better visualize the data.
@@ -55,7 +55,7 @@ Using the data from the State Data Table this shows an interactive map to allow 
 ### Dashboard Composition Continued
 
 #### Daily Data Table
-This table is a summarized version of the original data set that is grouped by date and the financial product. It totals the complaints for each day and product and then compares those complaints to the state's population.
+This table is a summarized version of the original data set that is grouped by date and the financial product. It totals the complaints for each day and product then compares those complaints to the state's population.
 
 #### Daily Time Series P lot
 Using the data from the Daily Data Table this shows an interactive time series chart to allot the user to better visualize the data.
